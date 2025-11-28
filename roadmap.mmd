@@ -1,0 +1,36 @@
+gantt
+    title Development Roadmap - Induction Temperature Controller
+    dateFormat YYYY-MM-DD
+
+    section Phase 1 - Breadboard Prototype
+    Breadboard Prototype           :p1, 2024-01-01, 14d
+    Wire ESP32 to MAX31856 on breadboard, test SPI communication :14d
+    Connect SSR to test load (light bulb), verify 3.3V control works :7d
+    Implement basic PID loop in Arduino, tune Kp Ki Kd parameters :7d
+
+    section Phase 2 - KiCad Schematic Design
+    KiCad Schematic               :p2, after p1, 14d
+    Design AC/DC isolation with proper creepage/clearance 6.4mm+ :7d
+    Select and place components - connectors, fuse holder, terminals :7d
+
+    section Phase 3 - PCB Layout
+    PCB Layout                    :p3, after p2, 14d
+    Route traces with wide copper for AC, proper ground planes :7d
+    Design 3D enclosure in CAD, ensure PCB fits with mounting holes :7d
+
+    section Phase 4 - Firmware Development
+    Firmware Development          :p4, after p3, 21d
+    Implement OLED UI with real-time temp display and menus :7d
+    Auto-tune PID using Ziegler-Nichols or relay method :7d
+    Add diagnostics - sensor fault detection, thermal runaway protection :7d
+
+    section Phase 5 - Testing and Calibration
+    Testing & Calibration         :p5, after p4, 14d
+    Water bath tests at 60-100°C, measure overshoot and stability :7d
+    High-temp oil tests 150-200°C, verify long-term accuracy :7d
+
+    section Phase 6 - Advanced Features
+    Advanced Features             :p6, after p5, 21d
+    Add IR or contact pan sensor to detect thermal mass changes :7d
+    Implement WiFi logging to InfluxDB/Grafana for temp graphs :7d
+    Create temperature profiles - ramp rates, multi-step cooking :7d

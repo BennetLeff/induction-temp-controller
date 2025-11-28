@@ -1,0 +1,110 @@
+(symbol "ASSR-1218"
+		(pin_names
+			(offset 0.254)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "U"
+			(at -6.35 6.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ASSR-1218"
+			(at 6.35 6.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solid-State Relay, 1-Form-A, 1.2A, 80V")
+		(property "ki_keywords" "opto SSR solid state relay")
+		(property "ki_fp_filters" "SIP*")
+		(symbol "ASSR-1218_0_1"
+			(rectangle
+				(start -3.81 5.08)
+				(end 3.81 -5.08)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+		)
+		(symbol "ASSR-1218_1_1"
+			(pin input line
+				(at -6.35 2.54 0)
+				(length 2.54)
+				(name "A"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1")
+			)
+			(pin input line
+				(at -6.35 -2.54 0)
+				(length 2.54)
+				(name "C"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2")
+			)
+			(pin output line
+				(at 6.35 2.54 180)
+				(length 2.54)
+				(name "O1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4")
+			)
+			(pin output line
+				(at 6.35 -2.54 180)
+				(length 2.54)
+				(name "O2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3")
+			)
+		)
+	)

@@ -1,0 +1,52 @@
+graph TB
+    subgraph "Hardware Architecture"
+        subgraph "DC Side (5V/3.3V)"
+            ESP32[ESP32 Microcontroller<br/>---<br/>• Runs PID control loop<br/>• Reads temp via SPI<br/>• Drives SSR with PWM<br/>• Handles UI/encoder input<br/>• WiFi capable for logging]
+            MAX31856[MAX31856<br/>Thermocouple Amp<br/>---<br/>• Cold junction compensation<br/>• 19-bit ADC resolution<br/>• ±0.15°C accuracy<br/>• SPI interface<br/>• Linearizes K-type output]
+            OLED[OLED Display<br/>---<br/>• Shows current temp<br/>• Shows target temp<br/>• Shows duty cycle %<br/>• Shows system status<br/>• I2C/SPI interface]
+            Encoder[Rotary Encoder<br/>---<br/>• Rotate: adjust target<br/>• Push: start/stop<br/>• Hardware debouncing<br/>• Interrupt-driven input]
+            USB[USB-C 5V Input<br/>---<br/>• Powers ESP32<br/>• Powers display<br/>• Isolated from AC<br/>• 1A minimum rating]
+        end
+
+        subgraph "Sensor"
+            Probe[K-Type Probe<br/>450-550°F<br/>---<br/>• Measures pan/liquid temp<br/>• Stainless steel sheath<br/>• Fast response time<br/>• Direct contact sensing<br/>• High-temp rated]
+        end
+
+        subgraph "AC Side (120-240V)"
+            IEC[IEC C14 Input<br/>---<br/>• Standard AC inlet<br/>• Accepts C13 plug<br/>• Fused protection<br/>• Ground connection<br/>• 10-15A rating]
+            Fuse[Fuse 5×20mm<br/>---<br/>• Overcurrent protection<br/>• 10A slow-blow<br/>• Protects wiring<br/>• Safety compliance<br/>• User replaceable]
+            SSR[Solid State Relay<br/>Optocoupled 10-40A<br/>---<br/>• AC/DC isolation barrier<br/>• Zero-cross switching<br/>• No moving parts<br/>• Fast switching (200ms)<br/>• Heat sink required]
+            Hot[AC Hot Wire<br/>---<br/>• Switched by SSR<br/>• Time-proportional control<br/>• Heavy gauge wire<br/>• Properly insulated]
+            Neutral[AC Neutral<br/>---<br/>• Passes through unswitched<br/>• Completes circuit<br/>• Returns current]
+            Ground[Earth Ground<br/>---<br/>• Safety ground<br/>• Chassis bonding<br/>• Fault protection<br/>• Required for safety]
+        end
+
+        subgraph "Load"
+            Cooktop[Induction Cooktop<br/>---<br/>• Standard consumer unit<br/>• Internal pan detection<br/>• Internal overtemp safety<br/>• Receives modulated AC<br/>• Average power controlled]
+        end
+    end
+
+    %% DC Connections
+    USB --> ESP32
+    Probe --> MAX31856
+    MAX31856 -->|SPI: Temperature data<br/>19-bit digital readings<br/>°C or °F output| ESP32
+    OLED -->|I2C/SPI: Display commands<br/>Graphics updates<br/>Status info| ESP32
+    Encoder -->|GPIO: Rotation pulses<br/>Button press<br/>Interrupt signals| ESP32
+
+    %% Control Signal - THIS IS THE CRITICAL ISOLATION BARRIER
+    ESP32 -.->|3.3V PWM Control Signal<br/>200ms time windows<br/>Duty cycle 0-100%<br/>OPTICALLY ISOLATED| SSR
+
+    %% AC Connections
+    IEC --> Fuse
+    Fuse --> Hot
+    Fuse --> Neutral
+    IEC --> Ground
+    Hot -->|Switched Hot Line<br/>ON during duty cycle<br/>OFF during remainder| SSR
+    SSR -->|Time-Proportional AC<br/>Modulated power delivery<br/>Average power = duty × max| Cooktop
+    Neutral -->|Unswitched Return Path| Cooktop
+    Ground -->|Safety Ground<br/>Protects against faults| Cooktop
+
+    style SSR fill:#ff9999,stroke:#cc0000,stroke-width:3px
+    style ESP32 fill:#99ccff,stroke:#0066cc,stroke-width:2px
+    style Probe fill:#ffcc99,stroke:#ff6600,stroke-width:2px
+    style Ground fill:#90EE90,stroke:#228B22,stroke-width:2px

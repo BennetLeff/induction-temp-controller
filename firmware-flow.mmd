@@ -1,0 +1,31 @@
+flowchart TD
+    Start([System Start]) --> Init[Initialize<br/>---<br/>• Configure SPI for MAX31856<br/>• Setup I2C/SPI for OLED<br/>• Configure encoder GPIO pins<br/>• Set PID parameters Kp, Ki, Kd<br/>• Load saved target temp<br/>• Setup PWM output for SSR]
+
+    Init --> Loop{Main Loop<br/>---<br/>Runs continuously<br/>~100ms cycle time<br/>Non-blocking execution}
+
+    Loop --> ReadTemp[Read Thermocouple<br/>via MAX31856<br/>---<br/>• Send SPI read command<br/>• Receive 19-bit temp data<br/>• Apply cold junction compensation<br/>• Convert to °C or °F<br/>• Store as current_temp<br/>• Check for sensor faults]
+
+    ReadTemp --> PID[PID Calculation<br/>---<br/>error = target - current_temp<br/>P = Kp × error<br/>I = Ki × Σ error × dt<br/>D = Kd × Δerror/dt<br/>output = P + I + D<br/>Anti-windup for integral term]
+
+    PID --> Clamp[Clamp Output<br/>0.0 to 1.0<br/>---<br/>• Limit output to valid range<br/>• 0.0 = 0% power OFF<br/>• 1.0 = 100% power FULL<br/>• Prevents overflow<br/>• Maps to duty cycle]
+
+    Clamp --> CalcDuty[Calculate Duty Cycle<br/>duty × 200ms window<br/>---<br/>• Window = 200ms total<br/>• ON_time = duty × 200ms<br/>• OFF_time = 1-duty × 200ms<br/>• Example: 60% → 120ms ON, 80ms OFF<br/>• Updates SSR timing]
+
+    CalcDuty --> DriveSSR[Drive SSR<br/>---<br/>• Set GPIO HIGH for ON_time<br/>• SSR conducts AC to cooktop<br/>• Set GPIO LOW for OFF_time<br/>• SSR blocks AC from cooktop<br/>• Zero-cross switching preferred<br/>• Generates time-proportional power]
+
+    DriveSSR --> UpdateUI[Update Display<br/>---<br/>• Draw current temp large font<br/>• Draw target temp with indicator<br/>• Draw duty cycle as % or bar<br/>• Show RUN/STOP status<br/>• Update every 200-500ms<br/>• Handle screen buffer refresh]
+
+    UpdateUI --> CheckInput{Encoder Input?<br/>---<br/>Check interrupt flags<br/>Read rotation state<br/>Read button state<br/>Debounce inputs}
+
+    CheckInput -->|Rotate| AdjustTarget[Adjust Target Temp<br/>---<br/>• Detect rotation direction<br/>• CW = increase target<br/>• CCW = decrease target<br/>• Step size: 0.5-1.0°C<br/>• Clamp to safe limits<br/>• 60-250°C typical<br/>• Save to memory]
+
+    CheckInput -->|Push| ToggleRun[Toggle Run/Stop<br/>---<br/>• Flip run state flag<br/>• RUN: enable PID & SSR<br/>• STOP: disable PID, SSR OFF<br/>• Debounce button press<br/>• Visual feedback on OLED<br/>• Safety check before start]
+
+    CheckInput -->|None| Loop
+    AdjustTarget --> Loop
+    ToggleRun --> Loop
+
+    style PID fill:#99ff99,stroke:#00cc00,stroke-width:2px
+    style DriveSSR fill:#ff9999,stroke:#cc0000,stroke-width:2px
+    style ReadTemp fill:#ffcc99,stroke:#ff6600,stroke-width:2px
+    style Init fill:#99ccff,stroke:#0066cc,stroke-width:2px

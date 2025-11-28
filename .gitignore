@@ -1,0 +1,50 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnail / metadata files
+._*
+.Spotlight-V100
+.Trashes
+
+# KiCad backup and cache files
+*.kicad_prl
+*-backups/
+*~
+
+# KiCad generated fabrication outputs (if exported to the repo)
+*.gbr
+*.gtl
+*.gbl
+*.gts
+*.gbs
+*.gto
+*.gbo
+*.gm1
+*.drl
+*.d356
+*.pos
+*.rpt
+*.csv
+
+# Archive artifacts
+*.zip
+*.tar
+*.tar.gz
+
+# Editor / IDE backups
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Node.js dependencies
+node_modules/
+
+# Python / tooling (if added later)
+__pycache__/
+*.pyc
+kicad-symbols-repo/
+temp-espressif-library/
