@@ -1,0 +1,11 @@
+{
+  "allowed_types": [
+    "pin_not_connected",
+    "power_pin_not_driven",
+    "wire_dangling",
+    "label_dangling",
+    "unconnected_wire_endpoint",
+    "footprint_link_issues",
+    "lib_symbol_issues"
+  ]
+}
