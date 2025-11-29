@@ -46,4 +46,17 @@ Notes:
 - **Add safety callouts/graphics**: once KiCad accepts the primitives, re-introduce isolation rectangles (likely via `polyline` instead of `gr_rect`).
 - **Documentation**: keep this file updated as the flow evolves, and summarize major milestones in `SCHEMATIC_STATUS.md`.
 
+## Supporting CLI Toolbox
+
+- `tools/check_footprints.py`: ensures every symbol instance carries a footprint and flags unknown libraries.
+- `tools/check_nets.py`: exports the netlist and verifies that plan-critical nets (SPI/I2C/AC) exist.
+- `tools/check_layout.py`: enforces spatial rules for DC/isolation/AC blocks and grid alignment.
+- `tools/run_checks.py`: wraps `kicad-cli sch erc` with a JSON allowlist to spotlight new violations.
+- `tools/gen_bom.py`: produces `bom/generated_bom.md` using KiCad’s BOM exporter plus a local supplier map.
+- `tools/simulate_ssr_drive.py`: quick sanity check for SSR LED current through R1.
+- `tools/render_status.py`: re-renders `docs/status_snapshot.md` with symbol counts and ERC stats.
+- `tools/extract_symbol_from_lib.py` / `tools/extract_footprint_from_lib.py`: grab individual assets from upstream libraries for reproducibility.
+- `tools/test_libraries.py`: smoke-test local `.kicad_sym` / `.kicad_mod` files for syntax issues.
+- `config/placements.json`: central source-of-truth for component coordinates/footprints used by `generate_full_schematic_cli.py`.
+
 Keeping the workflow CLI-first ensures the schematic can always be regenerated from source, which is essential before moving into PCB layout or automated checks.
