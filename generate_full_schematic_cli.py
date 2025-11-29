@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import textwrap
 import uuid
 from collections import OrderedDict
@@ -128,22 +129,6 @@ SYMBOL_SOURCES = OrderedDict(
     )
 )
 
-FOOTPRINT_MAP = {
-    "J1": "Connector_USB:USB_C_Receptacle_GCT_USB4085",
-    "C1": "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm",
-    "U1": "Espressif:ESP32-DevKitC",
-    "DISP1": "SSD1306_OLED:SSD1306_OLED-0.91-128x32",
-    "SW1": "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical",
-    "U2": "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm",
-    "J2": "Connector_Wire:Screw_Terminal_01x02",
-    "R1": "Resistor_SMD:R_1206_3216Metric",
-    "SSR1": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",
-    "J3": "Connector_AC:IEC_60320_C14_PanelMount",
-    "F1": "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_0031_8003_Straight",
-    "J4": "TerminalBlock:TerminalBlock_bornier-3_P5.08mm",
-}
-
-
 def load_symbol_definitions() -> OrderedDict[str, str]:
     symbols = OrderedDict()
     for lib_id, (library_path, lookup_name) in SYMBOL_SOURCES.items():
@@ -157,6 +142,12 @@ def load_symbol_definitions() -> OrderedDict[str, str]:
         symbols[lib_id] = definition.replace("\t", "  ")
 
     return symbols
+
+
+def load_placements() -> dict[str, dict]:
+    placement_path = repo_path("config", "placements.json")
+    with placement_path.open(encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def format_symbol_instance(
@@ -303,99 +294,30 @@ def main() -> None:
     symbol_definitions = load_symbol_definitions()
     lib_symbols = "\n".join(symbol_definitions.values())
     lib_symbols_block = "\n    ".join(lib_symbols.splitlines())
+    placements = load_placements()
 
-    dc_instances = [
-        format_symbol_instance(
-            lib_id="Connector:USB_C_Receptacle",
-            reference="J1",
-            value="USB-C",
-            position=(50.8, 63.5, 0),
-            footprint=FOOTPRINT_MAP["J1"],
-        ),
-        format_symbol_instance(
-            lib_id="Device:C",
-            reference="C1",
-            value="100µF",
-            position=(63.5, 76.2, 0),
-            footprint=FOOTPRINT_MAP["C1"],
-        ),
-        format_symbol_instance(
-            lib_id="Espressif:ESP32-DevKitC",
-            reference="U1",
-            value="ESP32-DevKitC",
-            position=(101.6, 101.6, 0),
-            footprint=FOOTPRINT_MAP["U1"],
-        ),
-        format_symbol_instance(
-            lib_id="SSD1306_OLED:SSD1306",
-            reference="DISP1",
-            value="SSD1306 OLED",
-            position=(76.2, 50.8, 0),
-            footprint=FOOTPRINT_MAP["DISP1"],
-        ),
-        format_symbol_instance(
-            lib_id="Device:RotaryEncoder_Switch",
-            reference="SW1",
-            value="Rotary Encoder",
-            position=(76.2, 76.2, 0),
-            footprint=FOOTPRINT_MAP["SW1"],
-        ),
-        format_symbol_instance(
-            lib_id="Sensor_Temperature:MAX31856",
-            reference="U2",
-            value="MAX31856",
-            position=(127.0, 152.4, 0),
-            footprint=FOOTPRINT_MAP["U2"],
-        ),
-        format_symbol_instance(
-            lib_id="Custom:Thermocouple_Connector",
-            reference="J2",
-            value="Thermocouple",
-            position=(139.7, 182.88, 0),
-            footprint=FOOTPRINT_MAP["J2"],
-        ),
-    ]
+    def build_instances(refs: list[str]) -> list[str]:
+        instances: list[str] = []
+        for ref in refs:
+            cfg = placements[ref]
+            instances.append(
+                format_symbol_instance(
+                    lib_id=cfg["lib_id"],
+                    reference=ref,
+                    value=cfg["value"],
+                    position=tuple(cfg["at"]),
+                    footprint=cfg.get("footprint", ""),
+                )
+            )
+        return instances
 
-    isolation_instances = [
-        format_symbol_instance(
-            lib_id="Device:R",
-            reference="R1",
-            value="330",
-            position=(177.8, 127.0, 0),
-            footprint=FOOTPRINT_MAP["R1"],
-        ),
-        format_symbol_instance(
-            lib_id="Relay_SolidState:ASSR-1218",
-            reference="SSR1",
-            value="ASSR-1218",
-            position=(203.2, 127.0, 0),
-            footprint=FOOTPRINT_MAP["SSR1"],
-        ),
-    ]
+    dc_refs = ["J1", "C1", "U1", "DISP1", "SW1", "U2", "J2"]
+    isolation_refs = ["R1", "SSR1"]
+    ac_refs = ["J3", "F1", "J4"]
 
-    ac_instances = [
-        format_symbol_instance(
-            lib_id="Connector:IEC_60320_C14_Receptacle",
-            reference="J3",
-            value="IEC C14",
-            position=(279.4, 63.5, 0),
-            footprint=FOOTPRINT_MAP["J3"],
-        ),
-        format_symbol_instance(
-            lib_id="Device:Fuse",
-            reference="F1",
-            value="10A",
-            position=(304.8, 63.5, 0),
-            footprint=FOOTPRINT_MAP["F1"],
-        ),
-        format_symbol_instance(
-            lib_id="Custom:AC_Outlet_Connector",
-            reference="J4",
-            value="Cooktop",
-            position=(330.2, 63.5, 0),
-            footprint=FOOTPRINT_MAP["J4"],
-        ),
-    ]
+    dc_instances = build_instances(dc_refs)
+    isolation_instances = build_instances(isolation_refs)
+    ac_instances = build_instances(ac_refs)
 
     power_instances = [
         format_power_symbol("power:+5V", reference="#PWR0101", value="+5V", position=(45.72, 91.44, 270)),

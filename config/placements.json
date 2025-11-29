@@ -1,0 +1,14 @@
+{
+  "J1": {"lib_id": "Connector:USB_C_Receptacle", "value": "USB-C", "at": [50.8, 63.5, 0], "footprint": "Connector_USB:USB_C_Receptacle_GCT_USB4085"},
+  "C1": {"lib_id": "Device:C", "value": "100µF", "at": [63.5, 76.2, 0], "footprint": "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm"},
+  "U1": {"lib_id": "Espressif:ESP32-DevKitC", "value": "ESP32-DevKitC", "at": [101.6, 101.6, 0], "footprint": "Espressif:ESP32-DevKitC"},
+  "DISP1": {"lib_id": "SSD1306_OLED:SSD1306", "value": "SSD1306 OLED", "at": [76.2, 50.8, 0], "footprint": "SSD1306_OLED:SSD1306_OLED-0.91-128x32"},
+  "SW1": {"lib_id": "Device:RotaryEncoder_Switch", "value": "Rotary Encoder", "at": [76.2, 76.2, 0], "footprint": "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical"},
+  "U2": {"lib_id": "Sensor_Temperature:MAX31856", "value": "MAX31856", "at": [127.0, 152.4, 0], "footprint": "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm"},
+  "J2": {"lib_id": "Custom:Thermocouple_Connector", "value": "Thermocouple", "at": [139.7, 182.88, 0], "footprint": "Connector_Wire:Screw_Terminal_01x02"},
+  "R1": {"lib_id": "Device:R", "value": "330", "at": [177.8, 127.0, 0], "footprint": "Resistor_SMD:R_1206_3216Metric"},
+  "SSR1": {"lib_id": "Relay_SolidState:ASSR-1218", "value": "ASSR-1218", "at": [203.2, 127.0, 0], "footprint": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"},
+  "J3": {"lib_id": "Connector:IEC_60320_C14_Receptacle", "value": "IEC C14", "at": [279.4, 63.5, 0], "footprint": "Connector_AC:IEC_60320_C14_PanelMount"},
+  "F1": {"lib_id": "Device:Fuse", "value": "10A", "at": [304.8, 63.5, 0], "footprint": "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_0031_8003_Straight"},
+  "J4": {"lib_id": "Custom:AC_Outlet_Connector", "value": "Cooktop", "at": [330.2, 63.5, 0], "footprint": "TerminalBlock:TerminalBlock_bornier-3_P5.08mm"}
+}
