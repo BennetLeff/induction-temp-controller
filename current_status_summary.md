@@ -1,26 +1,28 @@
-# Current Status Summary: Schematic Cleanup
+# Current Status Summary
 
-We are currently in the process of refining and professionalizing the KiCad schematic for the Induction Temperature Controller. The goal is to transform the programmatically generated schematic into a clean, readable, professional, and handcrafted-looking design.
+## TL;DR
 
-## Key Focus Areas for Cleanup:
+- The **CLI-first schematic pipeline** is the source of truth. `generate_full_schematic_cli.py` now instantiates every production symbol using the checked-in KiCad/Espressif/OLED libraries and the coordinates in `config/placements.json`.
+- `tools/render_status.py` reports **20 symbol instances** in `controller/controller-generated.kicad_sch` with **140 ERC violations** (mostly dangling labels/power pins) as of the latest regeneration.
+- All block-level annotations, net labels, and section callouts are emitted from Python so the schematic can be regenerated deterministically without touching the GUI.
 
-1.  **Component Symbol Refinement:**
-    *   Replacing generic connector symbols (e.g., for Thermocouple and AC Outlet) with more specific and descriptive symbols.
-    *   Ensuring all components use appropriate, non-generic symbol representations.
+## What’s Been Completed
 
-2.  **Layout and Readability Enhancements:**
-    *   Strategically organizing component placement to clearly delineate functional blocks (DC Side, Isolation Barrier, AC Side).
-    *   Implementing consistent spacing and alignment for all components.
-    *   Adding prominent text annotations and graphic elements (lines/rectangles) to visually highlight different sections and safety warnings (e.g., high voltage areas).
+1. **Library + symbol provenance locked down** via the bundled `kicad-symbols-repo/`, `temp-espressif-library/`, and `temp-oled-library/` directories plus the `extract_symbol_from_lib.py` helper.
+2. **Placement data centralized** in `config/placements.json`, covering USB-C power, ESP32 control, MAX31856, rotary input, SSR drive, thermocouple, and AC-side protection/connector hardware.
+3. **Programmatic annotations**: the generator stamps DC/Isolation/AC callouts, net labels for SPI/I²C/SSR control, and safety text, matching the schematic generation plan.
+4. **Automated status capture** through `tools/render_status.py`, which refreshes `docs/status_snapshot.md` after each ERC run to keep metrics visible.
 
-3.  **Wiring and Net Label Implementation:**
-    *   Implementing detailed wiring connections between components.
-    *   Applying appropriate power symbols (+5V, GND, +3V3) to clearly define power distribution.
-    *   Using meaningful net labels for all signal lines (e.g., SPI_SCK, I2C_SDA, SSR_CTRL) to improve clarity and traceability.
-    *   Ensuring all wiring is neat, straight, and properly joined at junctions.
+## In Flight / Blockers
 
-4.  **Final Review and Validation:**
-    *   Updating the schematic's title block with complete and accurate project information.
-    *   Running the Electrical Rules Checker (ERC) using `kicad-cli` to identify and rectify any electrical design issues.
+- **ERC cleanup**: Wiring serialization is good enough for KiCad to parse, but large portions of nets are still missing, leaving dangling pins and undriven power rails. This is the primary source of the 140 open violations.
+- **Footprint validation**: Every instantiated symbol now carries a footprint, but we still need to run the footprint checker scripts before sign-off.
+- **Graphic primitives**: Isolation rectangles and safety arrows still need to be reintroduced once we verify the syntax KiCad expects from generated drawings.
 
-This cleanup process aims to enhance both the aesthetic quality and the technical clarity of the generated schematic, preparing it for subsequent phases like PCB layout and detailed validation.
+## Next Steps
+
+1. Keep iterating inside `generate_full_schematic_cli.py` to finish the remaining wiring + power flag placement until `kicad-cli sch erc` reaches zero violations.
+2. Add the outstanding graphic primitives (isolation bar, HV warning blocks) via the generator so they survive regeneration.
+3. After the ERC noise floor drops, hand the schematic to the footprint + BOM tooling (`tools/check_footprints.py`, `tools/gen_bom.py`) to validate the library choices before PCB layout work begins.
+
+This document should be updated whenever we cut the ERC violation count or change the CLI workflow so newcomers can immediately see the project’s true status.

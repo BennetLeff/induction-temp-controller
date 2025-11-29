@@ -619,36 +619,8 @@
   },
   "sheets": [
     [
-      "e3e07454-60b4-4f1d-a195-6c2f70c434f1",
+      "a9e59bec-993c-403a-860b-484bf20c3b35",
       "Root"
-    ],
-    [
-      "45bd2c66-6369-41e2-bf41-d452b35af275",
-      "USB-C Power"
-    ],
-    [
-      "c3659aab-531c-4bca-8695-82886df68cb7",
-      "User Interface"
-    ],
-    [
-      "30cde24f-c4d8-497c-ab1f-efe27770b439",
-      "ESP32 DevKit-C"
-    ],
-    [
-      "e6536cb8-e367-41f1-9d97-cffd36db74c5",
-      "MAX31856"
-    ],
-    [
-      "d90db5e5-15bd-46bf-a133-b0ba2c24785d",
-      "SSR 10-40A"
-    ],
-    [
-      "94572a2b-abf2-4aac-abae-485c94468351",
-      "Fuse 10A"
-    ],
-    [
-      "5358046a-9a45-4f68-817f-cc021c59bc30",
-      "To Cooktop"
     ]
   ],
   "text_variables": {}

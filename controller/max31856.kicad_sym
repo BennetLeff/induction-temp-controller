@@ -1,4 +1,4 @@
-(symbol "MAX31856"
+symbol "MAX31856"
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -452,5 +452,4 @@
 				)
 			)
 		)
-		(embedded_fonts no)
-	)
+		(embedded_fonts no

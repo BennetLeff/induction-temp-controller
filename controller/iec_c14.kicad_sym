@@ -1,13 +1,9 @@
-(symbol "IEC_60320_C14_Receptacle"
-		(pin_names
-			(offset 0.508)
-			(hide yes)
-		)
+symbol "IEC_60320_C14_Receptacle"
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "J"
-			(at 0 6.35 0)
+			(at -5.842 8.636 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15,7 +11,7 @@
 			)
 		)
 		(property "Value" "IEC_60320_C14_Receptacle"
-			(at 0 -6.35 0)
+			(at 0 -9.144 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23,7 +19,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 0 0 0)
+			(at -2.286 0 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -32,6 +28,24 @@
 			)
 		)
 		(property "Datasheet" "~"
+			(at -2.286 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "C14 Plug, 10A max"
+			(at -0.635 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_keywords" "Plug C14 IEC320"
 			(at 0 0 0)
 			(effects
 				(font
@@ -40,11 +54,75 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "IEC 60320 C14 Receptacle")
-		(property "ki_keywords" "plug C14 IEC320")
+		(property "ki_fp_filters" "C*14*Receptacle*"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(symbol "IEC_60320_C14_Receptacle_1_1"
+			(rectangle
+				(start -6.35 7.62)
+				(end 6.35 -7.62)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(polyline
+				(pts
+					(xy -4.826 -6.35) (xy -5.334 -5.842) (xy -5.334 5.842) (xy -4.826 6.35) (xy 0.254 6.35) (xy 2.794 3.81)
+					(xy 2.794 -3.81) (xy 0.254 -6.35) (xy -4.826 -6.35)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -3.937 -3.302)
+				(end -1.397 -4.318)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type outline)
+				)
+			)
+			(rectangle
+				(start -3.81 4.318)
+				(end -1.27 3.302)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type outline)
+				)
+			)
+			(rectangle
+				(start -0.508 0.508)
+				(end 2.032 -0.508)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type outline)
+				)
+			)
 			(pin power_in line
-				(at -7.62 2.54 0)
+				(at 8.89 5.08 180)
 				(length 2.54)
 				(name "L"
 					(effects
@@ -53,22 +131,16 @@
 						)
 					)
 				)
-				(number "1")
-			)
-			(pin power_in line
-				(at -7.62 0 0)
-				(length 2.54)
-				(name "N"
+				(number "1"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "2")
 			)
-			(pin power_in line
-				(at -7.62 -2.54 0)
+			(pin bidirectional line
+				(at 8.89 0 180)
 				(length 2.54)
 				(name "PE"
 					(effects
@@ -77,7 +149,31 @@
 						)
 					)
 				)
-				(number "3")
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 8.89 -5.08 180)
+				(length 2.54)
+				(name "N"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
 			)
 		)
-	)
+		(embedded_fonts no

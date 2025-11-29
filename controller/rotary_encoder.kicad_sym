@@ -1,4 +1,4 @@
-(symbol "RotaryEncoder_Switch"
+symbol "RotaryEncoder_Switch"
 		(pin_names
 			(offset 0.254)
 			(hide yes)
@@ -384,5 +384,4 @@
 				)
 			)
 		)
-		(embedded_fonts no)
-	)
+		(embedded_fonts no

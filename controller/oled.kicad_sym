@@ -1,4 +1,4 @@
-(symbol "SSD1306"
+symbol "SSD1306"
 		(pin_names
 			(offset 1.016)
 		)
@@ -317,5 +317,4 @@
 				)
 			)
 		)
-		(embedded_fonts no)
-	)
+		(embedded_fonts no

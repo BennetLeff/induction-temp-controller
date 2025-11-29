@@ -1,4 +1,4 @@
-(symbol "ESP32-DevKitC"
+symbol "ESP32-DevKitC"
 		(pin_names
 			(offset 1.016)
 		)
@@ -770,5 +770,4 @@
 				)
 			)
 		)
-		(embedded_fonts no)
-	)
+		(embedded_fonts no

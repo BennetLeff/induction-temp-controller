@@ -39,46 +39,30 @@
 
 ## Next Steps
 
-### To Add More Components:
+### CLI-Driven Execution Plan
 
-Edit `generate_flat_schematic.py` and add more symbol instances. Pattern:
+1. **Generator of Record**  
+   - `generate_full_schematic_cli.py` now instantiates every real component symbol (from the KiCad, Espressif, and OLED libraries) and emits `controller/controller-generated.kicad_sch`.  
+   - Use `extract_symbol_from_lib.py` to pull in any symbols that are still missing so the generator stays self-contained.
 
-```python
-(symbol (lib_id "Device:C") (at x y 0) (unit 1)
-  (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
-  (uuid "{guid()}")
-  (property "Reference" "C2" (at x y 0) (effects (font (size 1.27 1.27))))
-  (property "Value" "0.1µF" (at x y 0) (effects (font (size 1.27 1.27))))
-  (property "Footprint" "" (at x y 0) (effects (font (size 1.27 1.27)) hide))
-  (property "Datasheet" "" (at x y 0) (effects (font (size 1.27 1.27)) hide))
-)
-```
+2. **Programmatic Layout & Wiring**  
+   - The script already places parts into the DC / isolation / AC blocks and adds text callouts; next step is to finish aligning the wire serialization with what KiCad expects so the generated file matches the handcrafted reference.
 
-### Components Still Needed:
-- U1: ESP32-DevKit-C module
-- U2: MAX31856 thermocouple amplifier
-- J1: USB-C power connector
-- J2: K-Type thermocouple connector
-- J3: IEC C14 AC inlet
-- J4: AC outlet to cooktop
-- F1: 10A fuse
-- SSR1: Solid state relay
-- DISP1: OLED display
-- SW1: Rotary encoder
-- C2: 0.1µF decoupling capacitor
-- Additional power symbols
+3. **Tight Feedback Loop**  
+   - Target loop: `python generate_full_schematic_cli.py` → `kicad-cli sch erc controller/controller-generated.kicad_sch --output erc_generated.rpt`.  
+   - Current status: `kicad-cli` rejects the generated schematic as soon as wires are present, so continue running ERC against `controller/controller.kicad_sch` (18 expected dangling-label violations) until the serialization issue is fixed.
 
-### To Run ERC (Electrical Rules Check):
-1. In KiCad schematic editor
-2. Menu: Inspect → Electrical Rules Checker
-3. Click "Run ERC"
-4. Review errors and warnings
+4. **GUI Only for Spot Checks**  
+   - Once ERC accepts the generated file, limit GUI edits to verification passes so the schematic remains reproducible from the CLI pipeline.
+
+This keeps development entirely scriptable, shortens the iteration loop, and makes it easy for future contributors to regenerate the schematic from source.
 
 ## Files
 
-- `generate_flat_schematic.py` - Main generator script (clean, works)
-- `controller/controller.kicad_sch` - Current schematic (loads successfully)
-- `controller/controller.kicad_sch.broken_backup` - Backup of broken version with hierarchical sheets
+- `generate_full_schematic_cli.py` - Current CLI generator (pulls real symbols, still polishing wire serialization)
+- `extract_symbol_from_lib.py` - Utility for capturing individual symbols from large `.kicad_sym` libraries
+- `controller/controller-generated.kicad_sch` - Latest programmatic output (loads once wire syntax matches KiCad’s expectations)
+- `controller/controller.kicad_sch` - Handcrafted reference schematic (passes `kicad-cli` ERC with 18 expected violations)
 
 ## Architecture
 
