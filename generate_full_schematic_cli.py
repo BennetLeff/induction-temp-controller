@@ -294,9 +294,9 @@ def format_polyline(points: list[tuple[float, float]]) -> str:
     pts_str = " ".join(f"(xy {x} {y})" for x, y in points)
     return textwrap.dedent(
         f"""
-        (gr_polyline (pts {pts_str})
-          (stroke (width 0.254) (type dash) (color 0 0 0 0))
-          (fill (type none))
+        (polyline
+          (pts {pts_str})
+          (stroke (width 0.254) (type dash))
           (uuid "{guid()}")
         )
         """
@@ -337,6 +337,7 @@ def main() -> None:
         format_power_symbol("power:+3V3", reference="#PWR0102", value="+3V3", position=(114.3, 86.36, 270)),
         format_power_symbol("power:GND", reference="#PWR0103", value="GND", position=(45.72, 104.14, 90)),
         format_power_symbol("power:GND", reference="#PWR0104", value="GND", position=(152.4, 172.72, 90)),
+        format_power_symbol("power:GND", reference="#PWR0105", value="GND", position=(195.58, 116.84, 0)),
     ]
 
     power_flag_instances = [
@@ -345,28 +346,44 @@ def main() -> None:
         format_power_symbol("power:PWR_FLAG", reference="#FLG0103", value="PWR_FLAG", position=(101.6, 86.36, 0)),
     ]
 
-    wires = []
-    wire_points = [
-        ((53.34, 63.5), (53.34, 76.2)),
-        ((53.34, 76.2), (53.34, 91.44)),
-        ((53.34, 91.44), (101.6, 91.44)),
-        ((53.34, 66.04), (53.34, 104.14)),
-        ((53.34, 104.14), (101.6, 104.14)),
-        ((101.6, 104.14), (127.0, 104.14)),
-        ((101.6, 86.36), (127.0, 86.36)),
-        ((101.6, 91.44), (101.6, 116.84)),
-        ((101.6, 104.14), (101.6, 78.74)),
-        ((177.8, 127.0), (203.2, 127.0)),
-        ((203.2, 127.0), (330.2, 127.0)),
-        ((279.4, 66.04), (304.8, 66.04)),
-        ((304.8, 66.04), (304.8, 63.5)),
-        ((304.8, 60.96), (203.2, 60.96)),
-        ((203.2, 60.96), (203.2, 127.0)),
-        ((279.4, 63.5), (330.2, 63.5)),
-        ((279.4, 60.96), (330.2, 60.96)),
-    ]
-    for start, end in wire_points:
-        wires.append(format_wire(start, end))
+    wires: list[str] = []
+
+    def add_path(points: list[tuple[float, float]]) -> None:
+        for start, end in zip(points, points[1:]):
+            wires.append(format_wire(start, end))
+
+    # Coordinate helpers
+    r1_top = (177.8, 130.81)
+    r1_bottom = (177.8, 123.19)
+    ssr_in_pos = (195.58, 129.54)
+    ssr_neg_pos = (195.58, 124.46)
+    ssr_ac_in = (210.82, 124.46)
+    ssr_ac_out = (210.82, 129.54)
+    j3_hot = (288.29, 68.58)
+    j3_neutral = (288.29, 58.42)
+    j3_ground = (288.29, 63.5)
+    f1_pin1 = (304.8, 67.31)
+    f1_pin2 = (304.8, 59.69)
+    j4_hot = (330.2, 66.04)
+    j4_neutral = (330.2, 63.5)
+    j4_ground = (330.2, 60.96)
+    gnd_local = (195.58, 116.84)
+
+    # SSR control net path
+    add_path([(170.18, 130.81), r1_top])
+    add_path([r1_bottom, (177.8, 129.54), ssr_in_pos])
+    add_path([ssr_neg_pos, (195.58, 118.11), gnd_local])
+
+    # AC hot path
+    add_path([j3_hot, (304.8, 68.58), f1_pin1])
+    add_path([f1_pin2, (250.0, 59.69), (250.0, 124.46), ssr_ac_in])
+    add_path([ssr_ac_out, (330.2, 129.54), j4_hot])
+
+    # AC neutral
+    add_path([j3_neutral, (330.2, 58.42), j4_neutral])
+
+    # AC ground
+    add_path([j3_ground, (320.0, 63.5), (320.0, 60.96), j4_ground])
 
     labels = [
         format_label("+5V", (43.18, 91.44)),
@@ -381,10 +398,10 @@ def main() -> None:
         format_label("ENC_A", (73.66, 109.22)),
         format_label("ENC_B", (73.66, 111.76)),
         format_label("ENC_SW", (73.66, 106.68)),
-        format_label("SSR_CTRL", (170.18, 127.0)),
-        format_label("AC_HOT", (271.78, 66.04)),
-        format_label("AC_NEUTRAL", (271.78, 63.5)),
-        format_label("AC_GND", (271.78, 60.96)),
+        format_label("SSR_CTRL", (170.18, 130.81)),
+        format_label("AC_HOT", (295.0, 68.58)),
+        format_label("AC_NEUTRAL", (295.0, 58.42)),
+        format_label("AC_GND", (295.0, 63.5)),
     ]
 
     text_entries = [

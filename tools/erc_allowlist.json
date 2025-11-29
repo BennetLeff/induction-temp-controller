@@ -6,6 +6,7 @@
     "label_dangling",
     "unconnected_wire_endpoint",
     "footprint_link_issues",
-    "lib_symbol_issues"
+    "lib_symbol_issues",
+    "endpoint_off_grid"
   ]
 }
