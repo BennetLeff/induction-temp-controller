@@ -124,6 +124,7 @@ SYMBOL_SOURCES = OrderedDict(
         ("power:+5V", (repo_path("kicad-symbols-repo", "power.kicad_sym"), "+5V")),
         ("power:+3V3", (repo_path("kicad-symbols-repo", "power.kicad_sym"), "+3V3")),
         ("power:GND", (repo_path("kicad-symbols-repo", "power.kicad_sym"), "GND")),
+        ("power:PWR_FLAG", (repo_path("kicad-symbols-repo", "power.kicad_sym"), "PWR_FLAG")),
     )
 )
 
@@ -403,6 +404,12 @@ def main() -> None:
         format_power_symbol("power:GND", reference="#PWR0104", value="GND", position=(152.4, 172.72, 90)),
     ]
 
+    power_flag_instances = [
+        format_power_symbol("power:PWR_FLAG", reference="#FLG0101", value="PWR_FLAG", position=(53.34, 91.44, 0)),
+        format_power_symbol("power:PWR_FLAG", reference="#FLG0102", value="PWR_FLAG", position=(53.34, 104.14, 0)),
+        format_power_symbol("power:PWR_FLAG", reference="#FLG0103", value="PWR_FLAG", position=(101.6, 86.36, 0)),
+    ]
+
     wires = []
     wire_points = [
         ((53.34, 63.5), (53.34, 76.2)),
@@ -472,7 +479,7 @@ def main() -> None:
           )
           
           {"\n".join(text_entries + graphic_entries)}
-          {"\n".join(dc_instances + isolation_instances + ac_instances + power_instances)}
+          {"\n".join(dc_instances + isolation_instances + ac_instances + power_instances + power_flag_instances)}
           {"\n".join(wires)}
           {"\n".join(labels)}
           (sheet_instances
