@@ -42,6 +42,7 @@ Notes:
 
 - **Component placement clean-up**: adjust coordinates/offsets in the generator for tighter alignment.
 - **Complete wiring + net labels**: continue filling in the nets defined in `SCHEMATIC_GENERATION_PLAN.md` until ERC passes cleanly.
+- **Assign and verify footprints**: see [`docs/footprint_plan.md`](footprint_plan.md) for the current mapping; keep it updated as footprint choices evolve.
 - **Add safety callouts/graphics**: once KiCad accepts the primitives, re-introduce isolation rectangles (likely via `polyline` instead of `gr_rect`).
 - **Documentation**: keep this file updated as the flow evolves, and summarize major milestones in `SCHEMATIC_STATUS.md`.
 
