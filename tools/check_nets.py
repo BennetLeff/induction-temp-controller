@@ -24,7 +24,7 @@ EXPECTED_NETS = (
 )
 
 
-NET_RE = re.compile(r'\(net\s+\(code\s+\d+\)\s+\(name\s+"([^"]+)"')
+NET_RE = re.compile(r'\(net\s+\(code\s+"?\d+"?\)\s+\(name\s+"([^"]+)"')
 
 
 def parse_args() -> argparse.Namespace:

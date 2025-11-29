@@ -359,8 +359,8 @@ def main() -> None:
     ssr_neg_pos = (195.58, 124.46)
     ssr_ac_in = (210.82, 124.46)
     ssr_ac_out = (210.82, 129.54)
-    j3_hot = (288.29, 68.58)
-    j3_neutral = (288.29, 58.42)
+    j3_hot = (288.29, 58.42)
+    j3_neutral = (288.29, 68.58)
     j3_ground = (288.29, 63.5)
     f1_pin1 = (304.8, 67.31)
     f1_pin2 = (304.8, 59.69)
@@ -375,15 +375,15 @@ def main() -> None:
     add_path([ssr_neg_pos, (195.58, 118.11), gnd_local])
 
     # AC hot path
-    add_path([j3_hot, (304.8, 68.58), f1_pin1])
-    add_path([f1_pin2, (250.0, 59.69), (250.0, 124.46), ssr_ac_in])
-    add_path([ssr_ac_out, (330.2, 129.54), j4_hot])
+    add_path([j3_hot, (304.8, 58.42), (304.8, 68.58), f1_pin1])
+    add_path([f1_pin2, (248.92, 59.69), (248.92, 124.46), ssr_ac_in])
+    add_path([ssr_ac_out, (320.04, 129.54), (320.04, 66.04), j4_hot])
 
     # AC neutral
-    add_path([j3_neutral, (330.2, 58.42), j4_neutral])
+    add_path([j3_neutral, (330.2, 68.58), j4_neutral])
 
     # AC ground
-    add_path([j3_ground, (320.0, 63.5), (320.0, 60.96), j4_ground])
+    add_path([j3_ground, (320.04, 63.5), (320.04, 60.96), j4_ground])
 
     labels = [
         format_label("+5V", (43.18, 91.44)),
@@ -399,8 +399,8 @@ def main() -> None:
         format_label("ENC_B", (73.66, 111.76)),
         format_label("ENC_SW", (73.66, 106.68)),
         format_label("SSR_CTRL", (170.18, 130.81)),
-        format_label("AC_HOT", (295.0, 68.58)),
-        format_label("AC_NEUTRAL", (295.0, 58.42)),
+        format_label("AC_HOT", (295.0, 58.42)),
+        format_label("AC_NEUTRAL", (295.0, 68.58)),
         format_label("AC_GND", (295.0, 63.5)),
     ]
 
