@@ -1,0 +1,14 @@
+{
+  "USB-C": {"mpn": "GCT USB4085", "status": "active"},
+  "100µF": {"mpn": "Nichicon UPW1H101MPD", "status": "active"},
+  "ESP32-DevKitC": {"mpn": "ESP32-DEVKITC-32E", "status": "active"},
+  "SSD1306 OLED": {"mpn": "Generic SSD1306 0.91in", "status": "active"},
+  "Rotary Encoder": {"mpn": "ALPS EC11E", "status": "active"},
+  "MAX31856": {"mpn": "ADI MAX31856ATI+", "status": "active"},
+  "Thermocouple": {"mpn": "Omega SMPW-K-T", "status": "active"},
+  "330": {"mpn": "Stackpole RMCF1206JT330R", "status": "active"},
+  "ASSR-1218": {"mpn": "Broadcom ASSR-1218-003E", "status": "active"},
+  "IEC C14": {"mpn": "Schurter 6200.3300", "status": "active"},
+  "10A": {"mpn": "Littelfuse 0312007.HXP", "status": "active"},
+  "Cooktop": {"mpn": "Phoenix Contact 1711735", "status": "active"}
+}
