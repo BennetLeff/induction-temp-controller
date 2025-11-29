@@ -290,6 +290,19 @@ def format_rect(start: tuple[float, float], end: tuple[float, float]) -> str:
     ).strip()
 
 
+def format_polyline(points: list[tuple[float, float]]) -> str:
+    pts_str = " ".join(f"(xy {x} {y})" for x, y in points)
+    return textwrap.dedent(
+        f"""
+        (gr_polyline (pts {pts_str})
+          (stroke (width 0.254) (type dash) (color 0 0 0 0))
+          (fill (type none))
+          (uuid "{guid()}")
+        )
+        """
+    ).strip()
+
+
 def main() -> None:
     symbol_definitions = load_symbol_definitions()
     lib_symbols = "\n".join(symbol_definitions.values())
@@ -380,7 +393,11 @@ def main() -> None:
         format_text("AC SIDE - HIGH VOLTAGE (120-240V) ⚡", (304.8, 40.64), 2.54, bold=True, justify=None),
     ]
 
-    graphic_entries: list[str] = []
+    graphic_entries: list[str] = [
+        format_polyline([(38.1, 30.48), (165.1, 30.48), (165.1, 215.9), (38.1, 215.9), (38.1, 30.48)]),
+        format_polyline([(177.8, 30.48), (254.0, 30.48), (254.0, 215.9), (177.8, 215.9), (177.8, 30.48)]),
+        format_polyline([(266.7, 30.48), (355.6, 30.48), (355.6, 215.9), (266.7, 215.9), (266.7, 30.48)]),
+    ]
 
     schematic = textwrap.dedent(
         f"""
